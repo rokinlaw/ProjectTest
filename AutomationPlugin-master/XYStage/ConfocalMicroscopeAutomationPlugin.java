@@ -27,7 +27,7 @@ public class ConfocalMicroscopeAutomationPlugin implements MenuPlugin, SciJavaPl
 
     @Override
     public String getName() {
-        return "Confocal Microscopy Automation";
+        return "XYStage";
     }
 
     @Override
