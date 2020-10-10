@@ -35,7 +35,7 @@ public class MainInterface{
 
 
     //Initializing all components necessary to setup the main frame.
-    private JFrame mainFrame = new JFrame("Confocal Microscope Automation");
+    private JFrame mainFrame = new JFrame("XYStage");
     private GridBagConstraints constraints = new GridBagConstraints();
     private JPanel tablePanel = new JPanel(new GridLayout(0,1));
     private JScrollPane pointInfoEntryPanel = new JScrollPane(tablePanel);
