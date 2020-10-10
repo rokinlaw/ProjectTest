@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ConfocalMicroscope">
+    <output-path>D:/program files/Micro-Manager-2.0gamma/mmplugins</output-path>
+    <root id="archive" name="ConfocalMicroscope.jar" />
+  </artifact>
+</component>

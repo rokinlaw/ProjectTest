@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="mmplugins">
+    <CLASSES>
+      <root url="file://D:/program files/Micro-Manager-2.0gamma/mmplugins" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://D:/program files/Micro-Manager-2.0gamma/mmplugins" recursive="false" />
+  </library>
+</component>
