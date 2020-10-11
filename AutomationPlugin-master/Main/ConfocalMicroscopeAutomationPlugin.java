@@ -1,4 +1,4 @@
-package XYStage;
+package Main;
 
 import org.micromanager.MenuPlugin;
 import org.micromanager.Studio;
@@ -27,7 +27,7 @@ public class ConfocalMicroscopeAutomationPlugin implements MenuPlugin, SciJavaPl
 
     @Override
     public String getName() {
-        return "XYStage";
+        return "Main Frame";
     }
 
     @Override

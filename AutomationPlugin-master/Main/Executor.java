@@ -1,5 +1,6 @@
-package XYStage;
+package Main;
 
+import Main.AcquisitionData;
 import mmcorej.CMMCore;
 
 import java.util.concurrent.Executors;
@@ -22,6 +23,9 @@ public class Executor {
             core.loadDevice("XY Stage", "DemoCamera", "DXYStage");
             core.loadDevice("Z Stage", "DemoCamera","DStage");
             core.initializeAllDevices();
+            core.getProperty("DiaLamp", "State");
+            core.getProperty("DiaLamp", "Intensity");
+            core.getProperty("Nosepiece","State");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -36,17 +40,23 @@ public class Executor {
             double minZ = Double.parseDouble(acquisitionData.pointInformation.get(i).get(3).getText());
             double zStepSize = Double.parseDouble(acquisitionData.pointInformation.get(i).get(4).getText());
             int interval = acquisitionData.timeIntervals.get(i);
+            int intensity = acquisitionData.ledintensity.get(i);
+            int objective = acquisitionData.objectivename.get(i);
             for(double z = maxZ; z >= minZ; z = z - zStepSize){
-                scheduleTaskForAPoint(x, y, z, interval, totalExperimentTime);
+                scheduleTaskForAPoint(x, y, z, interval, totalExperimentTime, intensity, objective);
             }
         }
         executorService.schedule(endExecutorTask, totalExperimentTime, TimeUnit.SECONDS);
     }
-    private void scheduleTaskForAPoint(double x, double y, double z, int interval, int totalTime){
+
+    private void scheduleTaskForAPoint(double x, double y, double z, int interval, int totalTime,int intensity,int objective){
         AtomicInteger cnt = new AtomicInteger(1);
         Runnable runnableTask = () -> {
             try {
                 Thread.sleep(Integer.parseInt(acquisitionData.exposureTime.getText()));
+                core.setProperty("Nosepiece","State",objective);
+                core.setProperty("DiaLamp", "State", "1");
+                core.setProperty("DiaLamp", "Intensity", intensity);
                 core.setXYPosition(x,y);
                 core.setPosition(z);
             } catch (InterruptedException e) {
@@ -54,7 +64,7 @@ public class Executor {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            System.out.println("Moved Microscope Stage to (" + x + ", " + y + ", " + z + ") | " + cnt.getAndIncrement() + "/" + (totalTime)/interval);
+            System.out.println("Moved Microscope Stage to (" + x + ", " + y + ", " + z + ") | " + cnt.getAndIncrement() + "/" + "totaltime/interval:" + (totalTime)/interval + " | " + " LEDintensity:"+intensity+"" + " | " + " Objective:"+objective+"");
         };
         executorService.scheduleAtFixedRate(runnableTask, interval, interval, TimeUnit.SECONDS);
     }

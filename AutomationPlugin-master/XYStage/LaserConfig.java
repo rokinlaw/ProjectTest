@@ -1,5 +1,7 @@
 package XYStage;
 
+import Main.AcquisitionData;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -34,7 +36,13 @@ public class LaserConfig{
         JButton updatePointsButton = new JButton("Update Points");
         updatePointsButton.addActionListener(e -> updatePointsPerformed(e));
         JButton saveTimeConfiguration = new JButton("Save");
-        saveTimeConfiguration.addActionListener(e -> saveTimeConfigurationPerformed(e));
+        saveTimeConfiguration.addActionListener(e -> {
+            try {
+                saveTimeConfigurationPerformed(e);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        });
         buttonPanel.add(updatePointsButton);
         buttonPanel.add(saveTimeConfiguration);
 
@@ -79,7 +87,7 @@ public class LaserConfig{
         infoEntryScrollPanel.repaint();
     }
 
-    private void saveTimeConfigurationPerformed(ActionEvent e) {
+    private void saveTimeConfigurationPerformed(ActionEvent e) throws Exception {
         acquisitionData.saveFinalConfigs();
     }
 

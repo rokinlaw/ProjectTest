@@ -1,5 +1,9 @@
-package XYStage;
+package Main;
 
+import LED.LEDConfig;
+import Objective.ObjectiveConfig;
+import XYStage.LaserConfig;
+import XYStage.TimeConfig;
 import mmcorej.CMMCore;
 import org.micromanager.Studio;
 import org.micromanager.internal.MMStudio;
@@ -29,13 +33,17 @@ public class MainInterface{
     private boolean laserConfigShown = false;
     private TimeConfig timeConfig = new TimeConfig(acquisitionData);
     private boolean timeConfigShown = false;
+    private LEDConfig ledtimeConfig = new LEDConfig(acquisitionData);
+    private boolean ledtimeConfigShown = false;
+    private ObjectiveConfig objectiveConfig = new ObjectiveConfig(acquisitionData);
+    private boolean objectiveConfigshown = false;
 
     //Initializing final entry class
     private Executor executor;
 
 
     //Initializing all components necessary to setup the main frame.
-    private JFrame mainFrame = new JFrame("XY Stage");
+    private JFrame mainFrame = new JFrame("Main Interface");
     private GridBagConstraints constraints = new GridBagConstraints();
     private JPanel tablePanel = new JPanel(new GridLayout(0,1));
     private JScrollPane pointInfoEntryPanel = new JScrollPane(tablePanel);
@@ -65,7 +73,13 @@ public class MainInterface{
         //Setting up final entry button
         JPanel finalEntryPanel = new JPanel();
         JButton enterButton = new JButton("Enter");
-        enterButton.addActionListener(e -> enterButtonPerformed(e));
+        enterButton.addActionListener(e -> {
+            try {
+                enterButtonPerformed(e);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        });
         finalEntryPanel.add(enterButton);
 
         //Setting up configuration button panel
@@ -78,10 +92,16 @@ public class MainInterface{
         laserInputButton.addActionListener(e -> laserInputButtonPerformed(e));
         JButton timeInputButton = new JButton("Additional Time Configurations");
         timeInputButton.addActionListener(e -> TimeInputButtonPerformed(e));
+        JButton LEDInputButton = new JButton("Additional LED Configuration");
+        LEDInputButton.addActionListener(e->  LEDInputButtonPerformed(e));
+        JButton ObjectiveButton = new JButton("Additional Objective Configuration");
+        ObjectiveButton.addActionListener(e->  ObjectiveButtonPerformed(e));
         configurationButtonPanel.add(addPointButton);
         configurationButtonPanel.add(removePointButton);
         configurationButtonPanel.add(laserInputButton);
         configurationButtonPanel.add(timeInputButton);
+        configurationButtonPanel.add(LEDInputButton);
+        configurationButtonPanel.add(ObjectiveButton);
 
         //Setting up input panel for time and laser configurations
         JPanel timeLaserConfigurations = new JPanel(new GridBagLayout());
@@ -150,6 +170,25 @@ public class MainInterface{
         mainFrame.setVisible(true);
     }
 
+    private void ObjectiveButtonPerformed(ActionEvent e) {
+        if(objectiveConfigshown == false) {
+            objectiveConfig.setUpObjectiveConfigInterface();
+            objectiveConfigshown = true;
+        }else{
+            objectiveConfig.redisplayWindow();
+        }
+    }
+
+
+    private void LEDInputButtonPerformed(ActionEvent e){
+        if(ledtimeConfigShown == false) {
+            ledtimeConfig.setUpLEDTimeConfigInterface();
+            ledtimeConfigShown = true;
+        } else{
+            ledtimeConfig.redisplayWindow();
+        }
+    }
+
     //Setting up point information entry panel
     private void setupPointInfoEntryPanel(){
         for(int i = 0; i < 5; i++){
@@ -186,8 +225,9 @@ public class MainInterface{
     }
 
     //Setting up behavior for when enter button is clicked
-    private void enterButtonPerformed(ActionEvent e) {
+    private void enterButtonPerformed(ActionEvent e){
         acquisitionData.saveFinalConfigs();
+        acquisitionData.updateledArrays();
         executor.execute();
     }
 
@@ -215,7 +255,6 @@ public class MainInterface{
 
     //Setting up behavior for when time configuration button is clicked
     private void TimeInputButtonPerformed(ActionEvent e) {
-        acquisitionData.timeIntervalBetweenShots.setText("Advanced Configs Present");
         if(timeConfigShown == false) {
             timeConfig.setUpTimeConfigInterface();
             timeConfigShown = true;
@@ -224,7 +263,7 @@ public class MainInterface{
         }
     }
 
-    public void setupLogger() {
+    public void setupLogger(){
         SimpleDateFormat format = new SimpleDateFormat("MM-dd_HHmmss");
         try {
             String dirname = LogFileManager.getLogFileDirectory().getAbsolutePath();

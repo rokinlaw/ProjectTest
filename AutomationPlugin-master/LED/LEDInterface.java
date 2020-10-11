@@ -1,5 +1,6 @@
 package LED;
 
+import Main.AcquisitionData;
 import mmcorej.CMMCore;
 import org.micromanager.Studio;
 import org.micromanager.internal.MMStudio;
@@ -23,14 +24,10 @@ public class LEDInterface {
     private MMStudio gui;
     private FileHandler fh;
     //Initializing additional configuration classes to allow to more personalized configurations
-    private LEDAcquisitionData acquisitionData = new LEDAcquisitionData();
-    private LEDTimeConfig timeConfig = new LEDTimeConfig(acquisitionData);
+    private AcquisitionData acquisitionData = new AcquisitionData();
     private boolean timeConfigShown = false;
     static final int MIN = 0;
     static final int MAX = 2100;
-
-    //Initializing final entry class
-    private LEDExecutor executor;
 
     //Initializing all components necessary to setup the main frame.
     private JFrame LEDmainFrame = new JFrame("LED");
@@ -41,12 +38,11 @@ public class LEDInterface {
         //Setting up behavior of the main frame
         LEDmainFrame.setLayout(new GridBagLayout());
         LEDmainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        LEDmainFrame.setSize(1000, 300);
+        LEDmainFrame.setSize(400, 300);
 
         //Setting up core components
         gui = (MMStudio) app;
         core = gui.getCMMCore();
-        executor = new LEDExecutor(acquisitionData, core);
 
         //Setting up title panel
         JPanel titlePanel = new JPanel();
@@ -78,7 +74,6 @@ public class LEDInterface {
         OFFPanel.add(offButton);
 
         //Setting up intensity function
-
         JPanel IntensityPanel = new JPanel();
         JSlider intensityslider = new JSlider(SwingConstants.HORIZONTAL, MIN, MAX, 0);
         intensityslider.addChangeListener((e -> {
@@ -128,20 +123,15 @@ public class LEDInterface {
     }
 
     private void intensitychangePerformed(ChangeEvent e) throws Exception {
-        JSlider source = (JSlider)e.getSource();
-        if (!source.getValueIsAdjusting()) {
-            int val = (int)source.getValue();
-            core.setProperty("DiaLamp", "Intensity", val);
+
         }
 
-    }
-
     private void onButtonPerformed(ActionEvent e) throws Exception {
-        core.setProperty("DiaLamp", "State", "1");
+
     }
 
     private void offButtonPerformed(ActionEvent e) throws Exception {
-        core.setProperty("DiaLamp", "State", "0");
+
     }
 
     public void setupLogger() {
