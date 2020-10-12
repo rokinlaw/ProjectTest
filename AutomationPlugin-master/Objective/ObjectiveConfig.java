@@ -5,10 +5,11 @@ import Main.AcquisitionData;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 public class ObjectiveConfig {
 
-        private JFrame timeConfigurationFrame = new JFrame("Objective Configuration");
+        private JFrame objectiveConfigurationFrame = new JFrame("Objective Configuration");
         private GridBagConstraints constraints = new GridBagConstraints();
         private JPanel tablePanel = new JPanel(new GridLayout(0,1));
         private JScrollPane infoEntryScrollPanel = new JScrollPane(tablePanel);
@@ -20,12 +21,12 @@ public class ObjectiveConfig {
 
         public void redisplayWindow() {
             acquisitionData.updateTimeArrays();
-            timeConfigurationFrame.setVisible(true);
+            objectiveConfigurationFrame.setVisible(true);
         }
 
         public void setUpObjectiveConfigInterface(){
-            timeConfigurationFrame.setLayout(new GridBagLayout());
-            timeConfigurationFrame.setSize(600, 300);
+            objectiveConfigurationFrame.setLayout(new GridBagLayout());
+            objectiveConfigurationFrame.setSize(600, 300);
 
             JPanel titlePanel = new JPanel();
             JLabel titleLabel = new JLabel("Enter Information Here");
@@ -48,18 +49,18 @@ public class ObjectiveConfig {
             updateTableDisplay();
 
             constraints.gridy = 0;
-            timeConfigurationFrame.add(titleLabel, constraints);
+            objectiveConfigurationFrame.add(titleLabel, constraints);
 
             constraints.gridy = 2;
-            timeConfigurationFrame.add(buttonPanel, constraints);
+            objectiveConfigurationFrame.add(buttonPanel, constraints);
 
             constraints.fill = GridBagConstraints.BOTH;
             constraints.gridy = 1;
             constraints.weightx = 0.5;
             constraints.weighty = 0.5;
-            timeConfigurationFrame.add(infoEntryScrollPanel, constraints);
+            objectiveConfigurationFrame.add(infoEntryScrollPanel, constraints);
 
-            timeConfigurationFrame.setVisible(true);
+            objectiveConfigurationFrame.setVisible(true);
 
         }
 
@@ -71,7 +72,7 @@ public class ObjectiveConfig {
         }
 
         private void saveConfigurationPerformed(ActionEvent e) {
-            timeConfigurationFrame.setVisible(false);
+            objectiveConfigurationFrame.setVisible(false);
         }
 
         private void updateTableDisplay(){
@@ -79,13 +80,16 @@ public class ObjectiveConfig {
             acquisitionData.updateobjectiveArrays();
             for (int i = 0; i < acquisitionData.timeInfo.size(); i++) {
                 JPanel singleRowPanel = new JPanel();
+                ArrayList<JList> subArray = acquisitionData.objectiveSelections.get(i);
                 String xCord = acquisitionData.pointInformation.get(i).get(0).getText();
                 String yCord = acquisitionData.pointInformation.get(i).get(1).getText();
                 String zCordMin = acquisitionData.pointInformation.get(i).get(2).getText();
                 String zCordMax = acquisitionData.pointInformation.get(i).get(3).getText();
                 singleRowPanel.add(new JLabel("Point " + (i + 1) + ": (" + xCord + ", " + yCord + ", " + zCordMin + " to " + zCordMax + ")"));
                 singleRowPanel.add(new JLabel(" | Objective:"));
-                singleRowPanel.add(acquisitionData.objectiveInfo.get(i));
+                for(int j = 0; j < subArray.size(); j++){
+                    singleRowPanel.add(subArray.get(j));
+                }
                 tablePanel.add(singleRowPanel);
             }
         }

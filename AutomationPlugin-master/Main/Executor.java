@@ -1,21 +1,25 @@
 package Main;
 
-import Main.AcquisitionData;
 import mmcorej.CMMCore;
 
+import javax.swing.*;
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import Main.AcquisitionData;
 
 public class Executor {
     private AcquisitionData acquisitionData;
     private ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
     private CMMCore core;
+    int objective= Main.AcquisitionData.c;
 
     public Executor(AcquisitionData acquisitionData, CMMCore core) {
         this.acquisitionData = acquisitionData;
         this.core = core;
+
     }
 
     public void execute(){
@@ -25,7 +29,6 @@ public class Executor {
             core.loadDevice("Z Stage", "DemoCamera","DStage");
             core.getProperty("DiaLamp", "State");
             core.getProperty("DiaLamp", "Intensity");
-            core.getProperty("Nosepiece","State");
 
             // load camera adapter
             core.loadDevice("Camera", "DemoCamera", "DCam");
@@ -50,7 +53,6 @@ public class Executor {
             double zStepSize = Double.parseDouble(acquisitionData.pointInformation.get(i).get(4).getText());
             int interval = acquisitionData.timeIntervals.get(i);
             int intensity = acquisitionData.ledintensity.get(i);
-            int objective = acquisitionData.objectivename.get(i);
             for(double z = maxZ; z >= minZ; z = z - zStepSize){
                 scheduleTaskForAPoint(x, y, z, interval, totalExperimentTime, intensity, objective);
             }
@@ -58,17 +60,28 @@ public class Executor {
         executorService.schedule(endExecutorTask, totalExperimentTime, TimeUnit.SECONDS);
     }
 
-    private void scheduleTaskForAPoint(double x, double y, double z, int interval, int totalTime,int intensity,int objective){
+    private void scheduleTaskForAPoint(double x, double y, double z, int interval, int totalTime, int intensity,int objective){
         AtomicInteger cnt = new AtomicInteger(1);
         Runnable runnableTask = () -> {
             try {
                 Thread.sleep(Integer.parseInt(acquisitionData.exposureTime.getText()));
-                core.setProperty("Nosepiece","State",objective);
                 core.setProperty("DiaLamp", "State", "1");
                 core.setProperty("DiaLamp", "Intensity", intensity);
+                if (objective==0){
+                    core.setProperty("Nosepiece","State","0");
+                }else if (objective==1){
+                    core.setProperty("Nosepiece","State","1");
+                }else if (objective==2){
+                    core.setProperty("Nosepiece","State","2");
+                }else if (objective==3){
+                    core.setProperty("Nosepiece","State","3");
+                }else if (objective==4){
+                    core.setProperty("Nosepiece","State","4");
+                }else if (objective==5){
+                    core.setProperty("Nosepiece","State","5");
+                }
                 core.setXYPosition(x,y);
                 core.setPosition(z);
-                core.waitForDevice("XY Stage");
                 core.snapImage();
 
             } catch (InterruptedException e) {
@@ -76,7 +89,7 @@ public class Executor {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            System.out.println("Moved Microscope Stage to (" + x + ", " + y + ", " + z + ") | " + cnt.getAndIncrement() + "/" + "totaltime/interval:" + (totalTime)/interval + " | " + " LEDintensity:"+intensity+"" + " | " + " Objective:"+objective+"");
+            System.out.println("Moved Microscope Stage to (" + x + ", " + y + ", " + z + ") | " + cnt.getAndIncrement() + "|" + "totaltime: " + totalTime + " interval: " + interval + " | " + " LEDintensity:"+ intensity + " Objective:" + objective);
         };
         executorService.scheduleAtFixedRate(runnableTask, interval, interval, TimeUnit.SECONDS);
     }

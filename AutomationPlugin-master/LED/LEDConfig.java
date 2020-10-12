@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class LEDConfig {
-    private JFrame timeConfigurationFrame = new JFrame("LED Configuration");
+    private JFrame ledConfigurationFrame = new JFrame("LED Configuration");
     private GridBagConstraints constraints = new GridBagConstraints();
     private JPanel tablePanel = new JPanel(new GridLayout(0,1));
     private JScrollPane infoEntryScrollPanel = new JScrollPane(tablePanel);
@@ -19,12 +19,12 @@ public class LEDConfig {
 
     public void redisplayWindow() {
         acquisitionData.updateTimeArrays();
-        timeConfigurationFrame.setVisible(true);
+        ledConfigurationFrame.setVisible(true);
     }
 
     public void setUpLEDTimeConfigInterface(){
-        timeConfigurationFrame.setLayout(new GridBagLayout());
-        timeConfigurationFrame.setSize(600, 300);
+        ledConfigurationFrame.setLayout(new GridBagLayout());
+        ledConfigurationFrame.setSize(600, 300);
 
         JPanel titlePanel = new JPanel();
         JLabel titleLabel = new JLabel("Enter Information Here");
@@ -47,18 +47,18 @@ public class LEDConfig {
         updateTableDisplay();
 
         constraints.gridy = 0;
-        timeConfigurationFrame.add(titleLabel, constraints);
+        ledConfigurationFrame.add(titleLabel, constraints);
 
         constraints.gridy = 2;
-        timeConfigurationFrame.add(buttonPanel, constraints);
+        ledConfigurationFrame.add(buttonPanel, constraints);
 
         constraints.fill = GridBagConstraints.BOTH;
         constraints.gridy = 1;
         constraints.weightx = 0.5;
         constraints.weighty = 0.5;
-        timeConfigurationFrame.add(infoEntryScrollPanel, constraints);
+        ledConfigurationFrame.add(infoEntryScrollPanel, constraints);
 
-        timeConfigurationFrame.setVisible(true);
+        ledConfigurationFrame.setVisible(true);
 
     }
 
@@ -70,7 +70,7 @@ public class LEDConfig {
     }
 
     private void saveConfigurationPerformed(ActionEvent e) {
-        timeConfigurationFrame.setVisible(false);
+        ledConfigurationFrame.setVisible(false);
     }
 
     private void updateTableDisplay(){

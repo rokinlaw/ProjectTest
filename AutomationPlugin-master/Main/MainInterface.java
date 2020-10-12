@@ -27,7 +27,6 @@ public class MainInterface{
     private FileHandler fh;
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
-
     //Initializing additional configuration classes to allow to more personalized configurations
     private AcquisitionData acquisitionData = new AcquisitionData();
     private LaserConfig laserConfig = new LaserConfig(acquisitionData);
@@ -54,7 +53,7 @@ public class MainInterface{
 
 
 
-    public void setupMainInterface(Studio app){
+    public void setupMainInterface(Studio app) throws Exception {
         //Setting up behavior of the main frame
         mainFrame.setLayout(new GridBagLayout());
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,6 +63,13 @@ public class MainInterface{
         gui = (MMStudio) app;
         core = gui.getCMMCore();
         executor = new Executor(acquisitionData, core);
+        core.setProperty("DiaLamp", "Intensity", 0);
+        core.setProperty("DiaLamp", "State", "0");
+        core.setProperty("Turret1Shutter", "State", "0");
+        core.setProperty("Turret2Shutter", "State", "0");
+        core.setProperty("FilterTurret1", "State", "0");
+        core.setProperty("FilterTurret1", "State", "0");
+        core.setProperty("Nosepiece", "State", "0");
 
         //Setting up title panel
         JPanel titlePanel = new JPanel();

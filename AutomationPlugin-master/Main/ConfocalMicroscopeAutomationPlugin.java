@@ -16,7 +16,11 @@ public class ConfocalMicroscopeAutomationPlugin implements MenuPlugin, SciJavaPl
 
     @Override
     public void onPluginSelected() {
-        mainFrame.setupMainInterface(studio);
+        try {
+            mainFrame.setupMainInterface(studio);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         mainFrame.setupLogger();
     }
 
