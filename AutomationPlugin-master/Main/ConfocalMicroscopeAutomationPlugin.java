@@ -27,7 +27,7 @@ public class ConfocalMicroscopeAutomationPlugin implements MenuPlugin, SciJavaPl
 
     @Override
     public String getName() {
-        return "Main Frame";
+        return "Main Interface";
     }
 
     @Override

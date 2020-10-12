@@ -5,7 +5,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import mmcorej.CMMCore;
-import mmcorej.StrVector;
 import org.micromanager.Studio;
 import org.micromanager.internal.MMStudio;
 import org.micromanager.internal.logging.LogFileManager;
@@ -15,7 +14,6 @@ public class AcquisitionData {
 
     //Array list storing point information
     public ArrayList<ArrayList<JTextField>> pointInformation = new ArrayList<ArrayList<JTextField>>();
-
 
     //Array lists storing time configuration information
     private String[] timeUnits = {"Seconds", "Minutes", "Hours"};
@@ -44,7 +42,7 @@ public class AcquisitionData {
         int difference = pointInformation.size() - timeInfo.size();
         if(difference > 0){
             for(int i = 0; i < difference; i++){
-                timeInfo.add(new JTextField(4));
+                timeInfo.add(new JTextField(5));
                 timeInfo.get(timeInfo.size() - 1).setText("0");
                 timeIntervals.add(0);
 

@@ -58,7 +58,7 @@ public class MainInterface{
         //Setting up behavior of the main frame
         mainFrame.setLayout(new GridBagLayout());
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setSize(1200,350);
+        mainFrame.setSize(1200,400);
 
         //Setting up core components
         gui = (MMStudio) app;
@@ -69,6 +69,7 @@ public class MainInterface{
         JPanel titlePanel = new JPanel();
         JLabel titleLabel = new JLabel("Please Enter Information Below");
         titlePanel.add(titleLabel);
+
 
         //Calling function to set up information entry panel
         setupPointInfoEntryPanel();
@@ -95,9 +96,9 @@ public class MainInterface{
         laserInputButton.addActionListener(e -> laserInputButtonPerformed(e));
         JButton timeInputButton = new JButton("Additional Time Configurations");
         timeInputButton.addActionListener(e -> TimeInputButtonPerformed(e));
-        JButton LEDInputButton = new JButton("Additional LED Configuration");
+        JButton LEDInputButton = new JButton("LED Configuration");
         LEDInputButton.addActionListener(e->  LEDInputButtonPerformed(e));
-        JButton ObjectiveButton = new JButton("Additional Objective Configuration");
+        JButton ObjectiveButton = new JButton("Objective Configuration");
         ObjectiveButton.addActionListener(e->  ObjectiveButtonPerformed(e));
         configurationButtonPanel.add(addPointButton);
         configurationButtonPanel.add(removePointButton);
@@ -202,6 +203,7 @@ public class MainInterface{
     //Setting up helper method to add a row to the info entry table
     private void addRowToTable(){
         JPanel singleRowPanel = new JPanel();
+        JLabel pointLabel = new JLabel("Point"+String.valueOf(acquisitionData.pointInformation.size()+1));
         ArrayList<JTextField> textFields = new ArrayList<JTextField>();
         ArrayList<JLabel> labels = new ArrayList<JLabel>();
         labels.add(new JLabel("X-Coordinate:"));
@@ -210,11 +212,12 @@ public class MainInterface{
         labels.add(new JLabel("Z-Coordinate Min:"));
         labels.add(new JLabel("Z Step Size:"));
         for(int i = 0; i < 5; i++){
-            textFields.add(new JTextField(3));
+            textFields.add(new JTextField(5));
             singleRowPanel.add(labels.get(i));
             singleRowPanel.add(textFields.get(i));
         }
         tablePanel.add(singleRowPanel);
+        singleRowPanel.add(pointLabel);
         acquisitionData.pointInformation.add(textFields);
     }
 
