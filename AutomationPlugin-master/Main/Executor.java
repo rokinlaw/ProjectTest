@@ -20,12 +20,21 @@ public class Executor {
 
     public void execute(){
         try {
+            // initialize Ti2 Device
             core.loadDevice("XY Stage", "DemoCamera", "DXYStage");
             core.loadDevice("Z Stage", "DemoCamera","DStage");
-            core.initializeAllDevices();
             core.getProperty("DiaLamp", "State");
             core.getProperty("DiaLamp", "Intensity");
             core.getProperty("Nosepiece","State");
+
+            // load camera adapter
+            core.loadDevice("Camera", "DemoCamera", "DCam");
+            core.initializeDevice("Camera");
+            core.setCameraDevice("Camera");
+
+            // initialize
+            core.initializeAllDevices();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,6 +68,9 @@ public class Executor {
                 core.setProperty("DiaLamp", "Intensity", intensity);
                 core.setXYPosition(x,y);
                 core.setPosition(z);
+                core.waitForDevice("XY Stage");
+                core.snapImage();
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (Exception e) {

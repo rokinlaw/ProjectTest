@@ -5,6 +5,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import mmcorej.CMMCore;
+import mmcorej.StrVector;
 import org.micromanager.Studio;
 import org.micromanager.internal.MMStudio;
 import org.micromanager.internal.logging.LogFileManager;
@@ -82,7 +83,7 @@ public class AcquisitionData {
         int difference = pointInformation.size() - ledintensityInfo.size();
         if(difference > 0){
             for(int i = 0; i < difference; i++){
-                ledintensityInfo.add(new JTextField(4));
+                ledintensityInfo.add(new JTextField(5));
                 ledintensityInfo.get(ledintensityInfo.size() - 1).setText("0");
                 ledintensity.add(0);
             }

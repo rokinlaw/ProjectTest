@@ -1,5 +1,6 @@
 package Main;
 
+import Camera.CameraConfig;
 import LED.LEDConfig;
 import Objective.ObjectiveConfig;
 import XYStage.LaserConfig;
@@ -37,6 +38,8 @@ public class MainInterface{
     private boolean ledtimeConfigShown = false;
     private ObjectiveConfig objectiveConfig = new ObjectiveConfig(acquisitionData);
     private boolean objectiveConfigshown = false;
+    private CameraConfig cameraConfig = new CameraConfig();
+    private boolean cameraConfigshown = false;
 
     //Initializing final entry class
     private Executor executor;
@@ -225,7 +228,7 @@ public class MainInterface{
     }
 
     //Setting up behavior for when enter button is clicked
-    private void enterButtonPerformed(ActionEvent e){
+    private void enterButtonPerformed(ActionEvent e) throws Exception {
         acquisitionData.saveFinalConfigs();
         acquisitionData.updateledArrays();
         executor.execute();
