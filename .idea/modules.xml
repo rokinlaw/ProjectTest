@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AutomationPlugin-master.iml" filepath="$PROJECT_DIR$/AutomationPlugin-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NikonTi2_Plugin.iml" filepath="$PROJECT_DIR$/NikonTi2_Plugin.iml" />
     </modules>
   </component>
 </project>
