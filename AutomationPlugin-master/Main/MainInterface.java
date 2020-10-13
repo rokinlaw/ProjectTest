@@ -69,7 +69,6 @@ public class MainInterface{
         core.setProperty("Turret2Shutter", "State", "0");
         core.setProperty("FilterTurret1", "State", "0");
         core.setProperty("FilterTurret1", "State", "0");
-        core.setProperty("Nosepiece", "State", "0");
 
         //Setting up title panel
         JPanel titlePanel = new JPanel();

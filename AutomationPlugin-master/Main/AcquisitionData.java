@@ -1,13 +1,13 @@
 package Main;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import mmcorej.CMMCore;
 
 public class AcquisitionData {
-    public static int c;
     private CMMCore core;
 
     //Array list storing point information
@@ -29,9 +29,8 @@ public class AcquisitionData {
     public ArrayList<JTextField> ledintensityInfo = new ArrayList<JTextField>();
 
     //Objective related configurations
-    public ArrayList<ArrayList<JList>> objectiveSelections = new ArrayList<ArrayList<JList>>();
-    protected ArrayList<Integer> selectedobjective = new ArrayList<Integer>();
-    protected int numOfobjectiveStages = 1;
+    public ArrayList<Integer> objectivename = new ArrayList<Integer>();
+    public ArrayList<JTextField> objectiveInfo = new ArrayList<JTextField>();
 
     //Array lists storing laser configuration information
     public ArrayList<ArrayList<JList>> laserSelections = new ArrayList<ArrayList<JList>>();
@@ -75,6 +74,24 @@ public class AcquisitionData {
         }
     }
 
+    public void updateObjectiveArrays() {
+        int difference = pointInformation.size() - objectiveInfo.size();
+        if(difference > 0){
+            for(int i = 0; i < difference; i++){
+                objectiveInfo.add(new JTextField(5));
+                objectiveInfo.get(objectiveInfo.size() - 1).setText("0");
+                objectivename.add(0);
+            }
+        } else if(difference < 0) {
+            for (int i = objectiveInfo.size(); i > pointInformation.size(); i--) {
+                objectiveInfo.remove(i - 1);
+            }
+        }
+        for(int i = 0; i < timeInfo.size(); i++) {
+            objectivename.set(i, Integer.parseInt(objectiveInfo.get(i).getText()));
+        }
+    }
+
     public void updateledArrays(){
         int difference = pointInformation.size() - ledintensityInfo.size();
         if(difference > 0){
@@ -90,31 +107,6 @@ public class AcquisitionData {
         }
         for(int i = 0; i < timeInfo.size(); i++) {
             ledintensity.set(i, Integer.parseInt(ledintensityInfo.get(i).getText()));
-        }
-    }
-
-    public void updateobjectiveArrays(){
-        String[] objectiveConfigurations = {"1", "2", "3", "4", "5", "6"};
-        int difference = pointInformation.size() - objectiveSelections.size();
-        if(difference > 0){
-            for(int i = 0; i < difference; i++){
-                ArrayList<JList> objectiveSelectionForPoint = new ArrayList<JList>();
-                    JList objectiveSelection = new JList(objectiveConfigurations);
-                    objectiveSelection.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-                    objectiveSelection.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-                    objectiveSelection.setVisibleRowCount(-4);
-                    objectiveSelectionForPoint.add(objectiveSelection);
-                    objectiveSelection.addListSelectionListener(e-> {
-                        JList list = (JList)e.getSource();
-                        c = list.getSelectedIndex();
-                        selectedobjective.add(c);
-                    });
-                objectiveSelections.add(objectiveSelectionForPoint);
-            }
-        } else if(difference < 0) {
-            for (int i = objectiveSelections.size(); i > pointInformation.size(); i--) {
-                objectiveSelections.remove(i - 1);
-            }
         }
     }
 
@@ -181,4 +173,5 @@ public class AcquisitionData {
             }
         }
     }
+
 }
